@@ -24,28 +24,22 @@ struct Scenario{
     var yesYes: String
     var no: String
     
-    func calculate(answer a: Int){
-        if a == 0{
-            print("positive Something good \(goodEffect) \(goodAmount)")
-            if Float.random(in: 0...1.0) < probability{
-                print("negative something bad \(badEffect) \(badAmount)")
-            }
-        }
-        else{
-            print("negative something good \(goodEffect) \(goodAmount)")
-        }
-    }
+    
     
     
 }
 
 class ViewController: UIViewController {
+    
+    
+    @IBOutlet weak var levelOutlet: UILabel!
     var level = 1
     var min : Float = 0.5
     
     var doubleClick : CGFloat = 1.0
     var nationHealthDecrease : CGFloat = 0.0
     var happinessIncrease : CGFloat = 0.0
+    var rationIncrease : CGFloat = 0.0
     
     var sound : AVAudioPlayer?
     
@@ -165,7 +159,14 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewcontroller load")
+        let userDefault = UserDefaults.standard
+        if userDefault.integer(forKey: "level") != 0{
+            level = userDefault.integer(forKey: "level")
+        }
+        print(level)
+        
+        
+       // print("viewcontroller load")
         buildScenarios()
         
         //flashTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
@@ -174,7 +175,7 @@ class ViewController: UIViewController {
         nextDayOutlet.setTitleColor(UIColor.systemGray, for: .disabled)
         //print(hospitalCapacityOutlet.frame.origin.y)
         y = graphView.frame.size.height-2
-        print("y in vdl = \(y)")
+       // print("y in vdl = \(y)")
         
         storeOutlet.layer.cornerRadius = 10
         nextDayOutlet.layer.cornerRadius = 10
@@ -208,6 +209,10 @@ class ViewController: UIViewController {
         
     }
     
+    func updateLevel(){
+        levelOutlet.text = "Level \(level)"
+    }
+    
     func playSound(file f : String){
         let path = Bundle.main.path(forResource: f, ofType:nil)!
            let url = URL(fileURLWithPath: path)
@@ -216,9 +221,9 @@ class ViewController: UIViewController {
                sound =  try AVAudioPlayer(contentsOf: url)
                sound?.play()
            } catch {
-               // couldn't load file :(
+               print("can't play sound")
            }
-        if f == "timer.wav"{
+        if f == "tickingClock.wav"{
             sound?.numberOfLoops = -1
         }
     }
@@ -229,7 +234,7 @@ class ViewController: UIViewController {
         path.move(to: CGPoint(x: x,y: y))
         x+=1
         y = graphView.frame.height - (graphView.frame.height - y)*(1.0 + 1.0*nationHealthRate/24.0)
-           print("y in draw curve \(y)")
+         //  print("y in draw curve \(y)")
         path.addLine(to: CGPoint(x: x ,y: y))
         
             //ychange*=nationHealthMult
@@ -249,10 +254,14 @@ class ViewController: UIViewController {
     }
     
     func randomStart(){
+        
         let alert = UIAlertController(title: "Level \(level)", message: "", preferredStyle: .alert)
+        
         alert.addAction(UIAlertAction(title: "ok", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
         doubleClick = 1
+        dailyFood = 0.005
+        rationIncrease = 0.0
         happinessIncrease = 0
         nationHealthDecrease = 0
         buildScenarios()
@@ -273,13 +282,14 @@ class ViewController: UIViewController {
         
         y = graphView.frame.size.height - 2 - CGFloat(level)
                x = 1.0
+        
         nationHealthRate = CGFloat(0.4 + 0.1 * Float(level))
                path = UIBezierPath()
                drawCurve()
         
         var minny = min - Float(level - 1) * 0.1
-        if minny < 0.13 {
-            minny = 0.13
+        if minny < 0.15 {
+            minny = 0.15
         }
         let max = minny + 0.1
         tpProgressOutlet.setProgress(Float.random(in: minny...max), animated: true)
@@ -297,7 +307,7 @@ class ViewController: UIViewController {
         
         let each = dailyFood/5.0
            foodGroupPercents = [FoodGroup.fruit: each, FoodGroup.vegetable: each, FoodGroup.grain: each, FoodGroup.protein: each, FoodGroup.dairy: each]
-           print(foodGroupPercents)
+          // print(foodGroupPercents)
         
     }
     
@@ -321,7 +331,7 @@ class ViewController: UIViewController {
         if foodProgressOutlet.progress == 0 ||  healthProgressOutlet.progress == 0 || happinessProgressOutlet.progress == 0 || tpProgressOutlet.progress == 0{
             timer?.invalidate()
             sound?.stop()
-            var loseAlert = UIAlertController(title: "You Lose!", message: loserMessage, preferredStyle: .alert)
+            let loseAlert = UIAlertController(title: "You Lose!", message: loserMessage, preferredStyle: .alert)
             loseAlert.view.backgroundColor = UIColor.red
             loseAlert.addAction(UIAlertAction(title: "play again", style: .default, handler: { (action) in
                 self.randomStart()}))
@@ -333,7 +343,7 @@ class ViewController: UIViewController {
     else if path.cgPath.currentPoint.y <= hospitalCapacityOutlet.frame.origin.y{
             timer?.invalidate()
             sound?.stop()
-            var loseAlert = UIAlertController(title: "You Lose", message: "Nation Health has overwhelemed the hospitals!", preferredStyle: .alert)
+            let loseAlert = UIAlertController(title: "You Lose", message: "Nation Health has overwhelemed the hospitals!", preferredStyle: .alert)
             loseAlert.view.backgroundColor = UIColor.red
             loseAlert.addAction(UIAlertAction(title: "play again", style: .default, handler: { (action) in
                 self.randomStart()}))
@@ -368,7 +378,7 @@ class ViewController: UIViewController {
                 self.happinessProgressOutlet.progress += scenario.goodAmount
             self.happinessPercentLabel.backgroundColor = UIColor.systemGreen
                 case "Toilet Paper":
-                print("no gain of toilet paper")
+                   print("no gain of toilet paper")
 //                self.tpProgressOutlet.progress += scenario.goodAmount
 //                self.tpPercentLabel.backgroundColor = UIColor.systemGreen
             default:
@@ -504,16 +514,16 @@ class ViewController: UIViewController {
     
     func updateAll(){
         
-        
+        updateLevel()
         foodUpdate()
         updateFamilyHealth()
         //nationHealthUpdate()
         happinessUpdate()
         tpUpdate()
-        print("food progress \(foodProgressOutlet.progress)")
-        print("Happiness progress \(happinessProgressOutlet.progress)")
-        print("Health progress \(healthProgressOutlet.progress)")
-        print("TP progress \(tpProgressOutlet.progress)")
+      //  print("food progress \(foodProgressOutlet.progress)")
+        //print("Happiness progress \(happinessProgressOutlet.progress)")
+        //print("Health progress \(healthProgressOutlet.progress)")
+        //print("TP progress \(tpProgressOutlet.progress)")
         
         updateMoney()
         growthRateOutlet.text = "Growth Rate: \(Int(nationHealthRate*100))%"
@@ -578,7 +588,7 @@ class ViewController: UIViewController {
                // print("Family Health Suffered 3%")
             }
         })
-        var divisor = 5 - numOut
+        let divisor = 5 - numOut
         foodGroupPercents.forEach({ (key, value) -> Void in
             let d = Float(divisor)
             if value > 0{
@@ -596,14 +606,15 @@ class ViewController: UIViewController {
     
     @objc func updateTimer(){
         //print("timer fired")
+        //playSound(file: "tick.mp3")
         hoursPassed+=1
         hoursPassedLabel.text = "Hour: \(hoursPassed)"
         
-        healthProgressOutlet.progress+=Float.random(in: -0.01...0.01)
+        healthProgressOutlet.progress+=Float.random(in: -0.015...0.01)
         updateFamilyHealth()
-        if happinessIncrease == 0.0{
-          happinessProgressOutlet.progress+=Float.random(in: -0.02...0.01)
-        }
+        
+          happinessProgressOutlet.progress+=Float.random(in: -0.015...0.01)
+        
         
         happinessUpdate()
         
@@ -623,6 +634,8 @@ class ViewController: UIViewController {
                 winAlert.view.backgroundColor = UIColor.yellow
                 winAlert.addAction(UIAlertAction(title: "Next Level", style: .default, handler: {(alert) in
                     self.level+=1
+                    let user = UserDefaults.standard
+                    user.set(self.level, forKey: "level")
                     self.randomStart()
                 }))
                 present(winAlert, animated: true){
@@ -817,19 +830,24 @@ NationHealthProgressOutlet.setProgress(NationHealthProgressOutlet.progress, anim
     }
     
     @IBAction func nextDayAction(_ sender: UIButton) {
-        
+        foodAdd = foodAdd * pow(0.80, Float(rationIncrease))
+        toiletPaperAdd = toiletPaperAdd * pow(0.80,Float(rationIncrease))
+        print ("foodAdd = \(foodAdd)")
+        print ("toiletPaperAdd = \(toiletPaperAdd)")
             nationHealthRate -= (0.05 * nationHealthDecrease)
+        healthProgressOutlet.progress += Float(0.05 * (happinessIncrease + 1.0))
+        
             growthRateOutlet.text = "Growth Rate \(Int(nationHealthRate*100))%"
         if nationHealthDecrease > 0{
            // growthRateOutlet.backgroundColor = UIColor.green
 
-        growthRateOutlet.alpha = 0
-            [UIView.animate(withDuration: 1.0, delay: 0.1, options: UIView.AnimationOptions.autoreverse , animations: {
-                self.growthRateOutlet.alpha = 1
-            }, completion: { (true) in
-                print("done with flash")
-                
-            })]
+        //growthRateOutlet.alpha = 0
+//            [UIView.animate(withDuration: 1.0, delay: 0.1, options: UIView.AnimationOptions.autoreverse , animations: {
+//                self.growthRateOutlet.alpha = 1
+//            }, completion: { (true) in
+//                print("done with flash")
+//
+//            })]
            }
         
             
@@ -851,10 +869,10 @@ NationHealthProgressOutlet.setProgress(NationHealthProgressOutlet.progress, anim
         hoursPassedLabel.text = "Hour: \(hoursPassed)"
         coronaButton.isEnabled = true
         timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
-        playSound(file: "timer.wav")
+        playSound(file: "tickingClock.wav")
         
         //nationHealthMult-=nationHealthMultAdd
-        print(nationHealthRate)
+       // print(nationHealthRate)
     }
    
     
@@ -876,6 +894,8 @@ NationHealthProgressOutlet.setProgress(NationHealthProgressOutlet.progress, anim
        store.doubleClick = doubleClick
         store.nationHealthDecrease = nationHealthDecrease
         store.happinessIncrease = happinessIncrease
+        store.rationIncrease = rationIncrease
+        
         store.level = level
       
         

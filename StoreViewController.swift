@@ -62,6 +62,7 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
     var doubleClick: CGFloat = 1.0
     var nationHealthDecrease: CGFloat = 0.0
     var happinessIncrease: CGFloat = 0.0
+    var rationIncrease: CGFloat = 0.0
     
     @IBOutlet weak var tableViewOutlet: UITableView!
     
@@ -77,7 +78,7 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("store View did load")
+       // print("store View did load")
         addItems()
         tableViewOutlet.reloadData()
         
@@ -135,10 +136,11 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func addItems(){
        items =  [               // Upgrades
-        Item(image: UIImage(named: "upArrow")!, title: "Double Click", category:  "Upgrade", increase:  0.0, price: 100 + 20 * level,foodGroup: FoodGroup.none, available: 1.0),
-        Item(image: UIImage(named: "upArrow")!, title: "Nation Growth Rate", category:  "Upgrade", increase:  0.0, price: 60 + 20 * level,foodGroup: FoodGroup.none, available: 1.0),
-        Item(image: UIImage(named: "upArrow")!, title: "Magic Pill", category:  "Upgrade", increase:  0.00, price: 30 + 10 * level ,foodGroup: FoodGroup.none, available: 1.0),
-        
+        Item(image: UIImage(named: "upArrow")!, title: "Clickerator", category:  "Upgrade", increase:  0.0, price: 100 + 20 * level,foodGroup: FoodGroup.none, available: 1.0),
+        Item(image: UIImage(named: "upArrow")!, title: "Flattenator", category:  "Upgrade", increase:  0.0, price: 60 + 20 * level,foodGroup: FoodGroup.none, available: 1.0),
+         Item(image: UIImage(named: "upArrow")!, title: "Rationator", category:  "Upgrade", increase:  0.00, price: 50 + 10 * level ,foodGroup: FoodGroup.none, available: 1.0),
+        Item(image: UIImage(named: "upArrow")!, title: "Happinator", category:  "Upgrade", increase:  0.00, price: 30 + 10 * level ,foodGroup: FoodGroup.none, available: 1.0),
+       
         
         
                                 // Fruits 3...32
@@ -214,21 +216,23 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
                                 Item(image: UIImage(named: "happinessIcon")!, title: "PlayStation", category: "Happiness",increase:  0.80, price: 200, foodGroup: FoodGroup.none, available: randAvail()),
 
                                 // Toilet Paper
+                                Item(image: UIImage(named: "tpIcon")!, title: "1 Pack of Toilet Paper", category:  "Toilet Paper", increase: 0.01, price: 1, foodGroup: FoodGroup.none, available: randAvail()),
                                Item(image: UIImage(named: "tpIcon")!, title: "8 Pack of Toilet Paper", category:  "Toilet Paper", increase: 0.08, price: 4, foodGroup: FoodGroup.none, available: randAvail()),
                                Item(image: UIImage(named: "tpIcon")!, title: "12 Pack of Toilet Paper", category:  "Toilet Paper", increase: 0.16, price: 6, foodGroup: FoodGroup.none, available: randAvail()),
                                Item(image: UIImage(named: "tpIcon")!, title: "24 Pack of Toilet Paper", category:  "Toilet Paper", increase: 0.24, price: 10, foodGroup: FoodGroup.none, available: randAvail()),
 
                                 // Family Health
-                               Item(image: UIImage(named: "familyIcon")!, title: "Hand Sanitizer", category: "Family Health", increase:  0.02, price: 3, foodGroup: FoodGroup.none, available: randAvail()),
-                               Item(image: UIImage(named: "familyIcon")!, title: "Soap", category: "Family Health", increase:  0.02, price: 5, foodGroup: FoodGroup.none, available: randAvail()),
-                               Item(image: UIImage(named: "familyIcon")!, title: "Tylenol", category: "Family Health", increase:  0.02, price: 7, foodGroup: FoodGroup.none, available: randAvail()),
-                               Item(image: UIImage(named: "familyIcon")!, title: "Vitamins", category: "Family Health", increase:  0.05, price: 30, foodGroup: FoodGroup.none, available: randAvail()),
+                               Item(image: UIImage(named: "familyIcon")!, title: "Hand Sanitizer", category: "Family Health", increase:  0.01, price: 3, foodGroup: FoodGroup.none, available: randAvail()),
+                               Item(image: UIImage(named: "familyIcon")!, title: "Soap", category: "Family Health", increase:  0.01, price: 3, foodGroup: FoodGroup.none, available: randAvail()),
+                               Item(image: UIImage(named: "familyIcon")!, title: "Lysol Wipes", category: "Family Health", increase:  0.02, price: 5, foodGroup: FoodGroup.none, available: randAvail()),
+                               Item(image: UIImage(named: "familyIcon")!, title: "Tylenol", category: "Family Health", increase:  0.02, price: 5, foodGroup: FoodGroup.none, available: randAvail()),
+                               Item(image: UIImage(named: "familyIcon")!, title: "Vitamins", category: "Family Health", increase:  0.05, price: 11, foodGroup: FoodGroup.none, available: randAvail()),
 
                                //National Health
         Item(image: UIImage(named: "nationalIcon")!, title: "Soup Kitchen Donation", category: "Nation Rate", increase:  -0.05, price: 50, foodGroup: FoodGroup.none, available: 1.0),
                                Item(image: UIImage(named: "nationalIcon")!, title: "PPE Donation", category: "Nation Rate", increase:  -0.1, price: 100, foodGroup: FoodGroup.none, available: 1.0),
-                               Item(image: UIImage(named: "nationalIcon")!, title: "Childcare for Health Care Workers Donation", category: "Nation Rate", increase:  -0.07, price: 70, foodGroup: FoodGroup.none, available: 1.0),
-                               Item(image: UIImage(named: "nationalIcon")!, title: "Homeless Shelter and Food Donation", category: "Nation Rate", increase:  -0.04, price: 40, foodGroup: FoodGroup.none, available: 1.0)
+                               Item(image: UIImage(named: "nationalIcon")!, title: "Childcare Donation", category: "Nation Rate", increase:  -0.07, price: 70, foodGroup: FoodGroup.none, available: 1.0),
+                               Item(image: UIImage(named: "nationalIcon")!, title: "Homeless Shelter Donation", category: "Nation Rate", increase:  -0.04, price: 40, foodGroup: FoodGroup.none, available: 1.0)
 
                               
                                
@@ -261,24 +265,29 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
         if(selected.category != "Upgrade"){
         cell.detailTextLabel?.text = "\(selected.category) \(Int(selected.increase*100))%"
         }
-        else if selected.title == "Double Click"{
+        else if selected.title == "Clickerator"{
             cell.detailTextLabel?.text = "Each click will be worth $\(Int(doubleClick*2.0))"
             
         }
-        else if selected.title == "Nation Growth Rate"{
-            cell.detailTextLabel?.text = "Growth Rate decrease \((nationHealthDecrease+1.0)*5.0)% daily"
+        else if selected.title == "Flattenator"{
+            cell.detailTextLabel?.text = "Daily Nation Growth Rate decrease \((nationHealthDecrease+1.0)*5.0)%"
             
         }
-        else if selected.title == "Magic Pill" {
-            cell.detailTextLabel?.text = "Happiness increase \((happinessIncrease+1.0)*5.0)% daily"
+        else if selected.title == "Happinator" {
+            cell.detailTextLabel?.text = "Daily Happiness increase \((happinessIncrease+1.0)*5.0)%"
             
         }
+        else if selected.title == "Rationator" {
+                  cell.detailTextLabel?.text = "Cut food and TP usage by an extra 20%"
+                  
+              }
+        
         
         let costLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
        
      costLabel.text = "$\(selected.price)"
        
-        if selected.available < 0.30{
+        if selected.available < 0.20 + 0.05 * Double(level){
         
          cell.isUserInteractionEnabled = false
              
@@ -327,7 +336,7 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
             }))
             present(alert, animated: true)
                 self.playSound(file: "gasp.wav")
-            print(todaysFoodItems)
+          //  print(todaysFoodItems)
             }
             
            
@@ -340,7 +349,7 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
                 if let current = foodGroupPercents[selected.foodGroup]{
                     foodGroupPercents.updateValue(current + selected.increase , forKey: selected.foodGroup)}
                 updateFoodGroupOutlets()
-                print(foodGroupPercents)
+            //    print(foodGroupPercents)
                 case "Nation Rate":
                 self.nationHealth += CGFloat(selected.increase)
                 self.nationOutlet.text = "Nation Growth: \(Int(self.nationHealth*100))%"
@@ -354,18 +363,22 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
                 self.tp += selected.increase
                 self.tpOutlet.text = "Toilet Paper: \(Int(self.tp*100))%"
             case "Upgrade":
-                if(selected.title == "Double Click"){
+                if(selected.title == "Clickerator"){
                     doubleClick *= 2.0
                     tableView.reloadData()
                 }
-                else if selected.title == "Nation Growth Rate"{
+                else if selected.title == "Flattenator"{
                     nationHealthDecrease += 1.0
                     tableView.reloadData()
                 }
-                else if selected.title == "Magic Pill"{
+                else if selected.title == "Happinator"{
                     happinessIncrease += 1.0
                     tableView.reloadData()
                 }
+                    else if selected.title == "Rationator"{
+                        rationIncrease += 1.0
+                        tableView.reloadData()
+                    }
                 else{
                     print("no upgrade action")
                 }
@@ -394,7 +407,7 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         if let vc = viewController as? ViewController{
         vc.money = cash
-            print("vcmoney \(vc.money)")
+           // print("vcmoney \(vc.money)")
             vc.updateMoney()
             vc.foodProgressOutlet.progress = food
             vc.nationHealthRate = nationHealth
@@ -408,6 +421,7 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
             vc.doubleClick = doubleClick
             vc.happinessIncrease = happinessIncrease
             vc.nationHealthDecrease = nationHealthDecrease
+            vc.rationIncrease = rationIncrease
             vc.storeOutlet.isEnabled = false
             
            
