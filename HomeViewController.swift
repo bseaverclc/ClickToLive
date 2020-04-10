@@ -34,7 +34,7 @@ var highestLevel = 0
         print(highestLevel)
         for i in 0...levelsOutlet.count - 1{
             let title = levelsOutlet[i].titleLabel!
-            var num = Int(String(title.text!.last!))!
+            let num = Int(String(title.text!.last!))!
             
             if num <= highestLevel{
                 levelsOutlet[i].isEnabled = true

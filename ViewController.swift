@@ -30,7 +30,11 @@ struct Scenario{
 }
 
 class ViewController: UIViewController, UINavigationControllerDelegate {
-    
+    var first = true
+    var totPercent:CGFloat = 0.0
+    var percent: CGFloat = 0.0
+    var height: CGFloat = 0.0
+
     
     @IBOutlet weak var levelOutlet: UILabel!
     var level = 1
@@ -61,7 +65,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     let shapeLayer = CAShapeLayer()
     let dotLayer = CAShapeLayer()
     var x: CGFloat = 0.0
-    var y : CGFloat = 0.0
+    var y : CGFloat = 1000.0
     //var yrate: CGFloat = 0.2
     //var ychangeMult: CGFloat = 1.005
     var nationHealthRate : CGFloat = 1.0
@@ -157,12 +161,20 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         ]
     }
     
-   
+    override func viewDidAppear(_ animated: Bool) {
+        print("view did appear")
+        height = graphView.frame.height
+        if first{
+        randomStart()
+        
+            first = false
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.delegate = self
-        
+        //totPercent = graphView.frame.size.height
         
        // print("viewcontroller load")
         buildScenarios()
@@ -172,7 +184,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         storeOutlet.setTitleColor(UIColor.systemGray, for: .disabled)
         nextDayOutlet.setTitleColor(UIColor.systemGray, for: .disabled)
         //print(hospitalCapacityOutlet.frame.origin.y)
-        y = graphView.frame.size.height-2
+        //y = totPercent * 0.02
        // print("y in vdl = \(y)")
         
         storeOutlet.layer.cornerRadius = 10
@@ -185,8 +197,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
       // NationHealthProgressOutlet.transform = NationHealthProgressOutlet.transform.scaledBy(x: 1, y: 4.0)
        happinessProgressOutlet.transform = happinessProgressOutlet.transform.scaledBy(x: 1, y: 4.0)
         tpProgressOutlet.transform = tpProgressOutlet.transform.scaledBy(x: 1, y: 4.0)
-        randomStart()
-        drawCurve()
+        print("graph view height in view did load \(graphView.frame.height)")
+        //randomStart()
+        //drawCurve()
          
         
        
@@ -195,7 +208,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         storeOutlet.isEnabled = false
        nextDayOutlet.isEnabled = true
         resetDailyTotals()
-        updateAll()
+        
         coronaButton.isEnabled = false
         
         
@@ -209,6 +222,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     
     func updateLevel(){
         levelOutlet.text = "Level: \(level)"
+    }
+    
+    func updateCapacity(){
+        percent = (graphView.frame.height - y) / (graphView.frame.height - hospitalCapacityOutlet.frame.origin.y)*100.0
+        nationPercentOutlet.text = "Hospital Capacity \(Int(percent))%"
     }
     
     func playSound(file f : String){
@@ -231,8 +249,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     func drawCurve(){
         path.move(to: CGPoint(x: x,y: y))
         x+=1
-        y = graphView.frame.height - (graphView.frame.height - y)*(1.0 + 1.0*nationHealthRate/24.0)
-         //  print("y in draw curve \(y)")
+        print("y before calculation \(y)")
+        y = height - (height - y)*(1.0 + 1.0*nationHealthRate/24.0)
+        print("graphview height: \(height)")
+        
+    
+        print("difference: \(height - y)")
+          print("y in draw curve \(y)")
         path.addLine(to: CGPoint(x: x ,y: y))
         
             //ychange*=nationHealthMult
@@ -247,8 +270,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         graphView.layer.addSublayer(shapeLayer)
         
         growthRateOutlet.text = "Growth Rate \(Int(nationHealthRate*100))%"
-        var percent = (graphView.frame.height - y) / (graphView.frame.height - hospitalCapacityOutlet.frame.origin.y)*100.0
-        nationPercentOutlet.text = "Hospital Capacity \(Int((graphView.frame.height - y) / (graphView.frame.height - hospitalCapacityOutlet.frame.origin.y)*100))%"
+        percent = (graphView.frame.height - y) / (graphView.frame.height - hospitalCapacityOutlet.frame.origin.y)*100.0
+        nationPercentOutlet.text = "Hospital Capacity \(Int(percent))%"
         //print("nationHealthRate: \(nationHealthRate)")
         //print("Capacity: \(percent)")
         
@@ -281,12 +304,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         hoursPassedLabel.text = "Hour: \(hoursPassed)"
         
         
-        y = graphView.frame.size.height - 2 - CGFloat(level)
+        y = height - (height * (0.02 + CGFloat(level)/100.0))
+        print("starting total height \(height)")
+        print("Starting y value \(y)")
                x = 1.0
         
         nationHealthRate = CGFloat(0.5 + 0.1 * Float(level))
                path = UIBezierPath()
-               drawCurve()
+              // drawCurve()
         
         var minny = min - Float(level - 1) * 0.1
         if minny < 0.15 {
@@ -301,7 +326,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         timer?.invalidate()
         sound?.stop()
         resetDailyTotals()
-        updateAll()
+        
         storeOutlet.isEnabled = false
         nextDayOutlet.isEnabled = true
         coronaButton.isEnabled = false
@@ -310,6 +335,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
            foodGroupPercents = [FoodGroup.fruit: each, FoodGroup.vegetable: each, FoodGroup.grain: each, FoodGroup.protein: each, FoodGroup.dairy: each]
           // print(foodGroupPercents)
         
+        drawCurve()
+        updateAll()
     }
     
    func checkLose(){
