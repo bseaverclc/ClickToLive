@@ -29,11 +29,12 @@ struct Scenario{
     
 }
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UINavigationControllerDelegate {
     
     
     @IBOutlet weak var levelOutlet: UILabel!
     var level = 1
+    var highestLevel = 1
     var min : Float = 0.5
     
     var doubleClick : CGFloat = 1.0
@@ -160,11 +161,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let userDefault = UserDefaults.standard
-        if userDefault.integer(forKey: "level") != 0{
-            level = userDefault.integer(forKey: "level")
-        }
-        print(level)
+        self.navigationController?.delegate = self
         
         
        // print("viewcontroller load")
@@ -211,7 +208,7 @@ class ViewController: UIViewController {
     }
     
     func updateLevel(){
-        levelOutlet.text = "Level \(level)"
+        levelOutlet.text = "Level: \(level)"
     }
     
     func playSound(file f : String){
@@ -250,7 +247,10 @@ class ViewController: UIViewController {
         graphView.layer.addSublayer(shapeLayer)
         
         growthRateOutlet.text = "Growth Rate \(Int(nationHealthRate*100))%"
+        var percent = (graphView.frame.height - y) / (graphView.frame.height - hospitalCapacityOutlet.frame.origin.y)*100.0
         nationPercentOutlet.text = "Hospital Capacity \(Int((graphView.frame.height - y) / (graphView.frame.height - hospitalCapacityOutlet.frame.origin.y)*100))%"
+        print("nationHealthRate: \(nationHealthRate)")
+        print("Capacity: \(percent)")
         
     }
     
@@ -284,7 +284,7 @@ class ViewController: UIViewController {
         y = graphView.frame.size.height - 2 - CGFloat(level)
                x = 1.0
         
-        nationHealthRate = CGFloat(0.4 + 0.1 * Float(level))
+        nationHealthRate = CGFloat(-0.02 + 0.1 * Float(level))
                path = UIBezierPath()
                drawCurve()
         
@@ -635,8 +635,9 @@ class ViewController: UIViewController {
                 winAlert.view.backgroundColor = UIColor.yellow
                 winAlert.addAction(UIAlertAction(title: "Next Level", style: .default, handler: {(alert) in
                     self.level+=1
+                    self.highestLevel = self.level
                     let user = UserDefaults.standard
-                    user.set(self.level, forKey: "level")
+                    user.set(self.highestLevel, forKey: "level")
                     self.randomStart()
                 }))
                 present(winAlert, animated: true){
@@ -823,6 +824,9 @@ NationHealthProgressOutlet.setProgress(NationHealthProgressOutlet.progress, anim
     }
     
     func nextDay(){
+        let user = UserDefaults.standard
+        user.set(self.level, forKey: "level")
+        
         storeOutlet.isEnabled = false
                nextDayOutlet.isEnabled = false
                resetDailyTotals()
@@ -903,8 +907,12 @@ NationHealthProgressOutlet.setProgress(NationHealthProgressOutlet.progress, anim
     }
  
     
-   
-    
+   func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+    if let vc = viewController as? HomeViewController{
+        vc.highestLevel = highestLevel
+        vc.setUpLevels()
+    }
+    }
     
     
   
