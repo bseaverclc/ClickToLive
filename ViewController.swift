@@ -284,7 +284,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         y = graphView.frame.size.height - 2 - CGFloat(level)
                x = 1.0
         
-        nationHealthRate = CGFloat(-0.02 + 0.1 * Float(level))
+        nationHealthRate = CGFloat(-0.3 + 0.1 * Float(level))
                path = UIBezierPath()
                drawCurve()
         
@@ -634,15 +634,18 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
                 let winAlert = UIAlertController(title: "You Win Level \(level)", message: "You helped flatten the curve!", preferredStyle: .alert)
                 winAlert.view.backgroundColor = UIColor.yellow
                 winAlert.addAction(UIAlertAction(title: "Next Level", style: .default, handler: {(alert) in
-                    self.level+=1
-                    self.highestLevel = self.level
-                    let user = UserDefaults.standard
-                    user.set(self.highestLevel, forKey: "level")
+                    
                     self.randomStart()
                 }))
                 present(winAlert, animated: true){
                     self.timer?.invalidate()
                     self.playSound(file: "applause.wav")
+                    self.level+=1
+                    if self.level > self.highestLevel{
+                    self.highestLevel = self.level
+                    }
+                    let user = UserDefaults.standard
+                    user.set(self.highestLevel, forKey: "level")
                 }
             }
         }
@@ -910,6 +913,7 @@ NationHealthProgressOutlet.setProgress(NationHealthProgressOutlet.progress, anim
    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
     if let vc = viewController as? HomeViewController{
         vc.highestLevel = highestLevel
+        print("level being sent over \(vc.highestLevel)")
         vc.setUpLevels()
     }
     }
