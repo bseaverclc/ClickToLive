@@ -249,8 +249,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         growthRateOutlet.text = "Growth Rate \(Int(nationHealthRate*100))%"
         var percent = (graphView.frame.height - y) / (graphView.frame.height - hospitalCapacityOutlet.frame.origin.y)*100.0
         nationPercentOutlet.text = "Hospital Capacity \(Int((graphView.frame.height - y) / (graphView.frame.height - hospitalCapacityOutlet.frame.origin.y)*100))%"
-        print("nationHealthRate: \(nationHealthRate)")
-        print("Capacity: \(percent)")
+        //print("nationHealthRate: \(nationHealthRate)")
+        //print("Capacity: \(percent)")
         
     }
     
@@ -284,7 +284,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         y = graphView.frame.size.height - 2 - CGFloat(level)
                x = 1.0
         
-        nationHealthRate = CGFloat(-0.3 + 0.1 * Float(level))
+        nationHealthRate = CGFloat(0.5 + 0.1 * Float(level))
                path = UIBezierPath()
                drawCurve()
         
