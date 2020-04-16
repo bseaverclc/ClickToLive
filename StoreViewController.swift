@@ -21,15 +21,7 @@ struct Item{
     var price : Int
     var foodGroup: FoodGroup
     var available: Double
-    
-//    init(image i: UIImage, title t: String, category c: String,increase inc: Float, price p : Int){
-//        image = i
-//        title = t
-//        category = c
-//        increase = inc
-//        price = p
-//
-//    }
+
 }
 
 class StoreViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,UINavigationControllerDelegate {
@@ -37,10 +29,7 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
     var sound : AVAudioPlayer?
     
     var items : [Item] = []
-    
-    
-    
-    
+ 
     var foodGroupPercents: [FoodGroup: Float] = [:]
     var todaysFoodItems: [String : Int] = [:]
     
@@ -93,9 +82,7 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
         happinessOutlet.text = "Happiness: \(Int(happiness*100))%"
         tpOutlet.text = "Toilet Paper: \(Int(tp*100))%"
         updateFoodGroupOutlets()
-        //soldOut()
-        
-        
+
     }
     
     func playSound(file f: String){
@@ -110,24 +97,7 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     }
     
-//    func soldOut(){
-//        for i in 3...29{
-//            if Double.random(in: 0...1.0) < 0.20{
-//                if let cell = tableViewOutlet.cellForRow(at: IndexPath(row: i, section: 0)){
-//                cell.isUserInteractionEnabled = false
-//                    let costLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-//                    costLabel.text = "Out!"
-//                    cell.accessoryView = costLabel
-//               // costLabel.text = "Out!"
-//
-//                cell.backgroundColor = UIColor.yellow
-//                }
-//
-//            }
-//        }
-//
-//
-//        }
+
     
     func randAvail()-> Double{
         return Double.random(in: 0...1.0)
@@ -185,16 +155,12 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
                             Item(image: UIImage(named: "shoppingCart")!, title: "Yogurt", category: "Food", increase:  0.02, price: 6, foodGroup: FoodGroup.dairy, available: randAvail()),
                             Item(image: UIImage(named: "shoppingCart")!, title: "Ice Cream", category: "Food", increase:  0.02, price: 6, foodGroup: FoodGroup.dairy, available: randAvail()),
 
+                            
                             // Junk
-
-
                               Item(image: UIImage(named: "shoppingCart")!, title: "Candy Bars", category: "Food",increase:  0.01, price: 3, foodGroup: FoodGroup.junk, available: randAvail()),
                               Item(image: UIImage(named: "shoppingCart")!, title: "Frozen Pizza", category: "Food",increase:  0.02, price: 4, foodGroup: FoodGroup.junk, available: randAvail()),
                               Item(image: UIImage(named: "shoppingCart")!, title: "Bag of Chips", category: "Food", increase: 0.02, price: 6, foodGroup: FoodGroup.junk, available: randAvail()),
                               Item(image: UIImage(named: "shoppingCart")!, title: "Box of Oreos", category:  "Food", increase: 0.02, price: 6, foodGroup: FoodGroup.junk, available: randAvail()),
-
-
-
 
                                // Happiness
                                Item(image: UIImage(named: "happinessIcon")!, title: "Rent a Movie", category: "Happiness", increase: 0.02, price: 5, foodGroup: FoodGroup.none, available: randAvail()),
@@ -327,8 +293,8 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
                 todaysFoodItems.updateValue(1, forKey: selected.title)
             }
             
-            if todaysFoodItems[selected.title]! >= 5{
-            let alert = UIAlertController(title: "Hoarding Alert!", message: "You are hoarding \(selected.title) and have hurt the Nation's Health!", preferredStyle: .alert)
+            if todaysFoodItems[selected.title]! >= 5 && selected.category != "Upgrades" && selected.category != "Nation Rate"{
+            let alert = UIAlertController(title: "Hoarding Alert!", message: "You are hoarding \(selected.title) and have hurt the Nation's Health! Nation growth rate will increase.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "ok", style: .cancel, handler: { (alert) in
                 self.nationHealth += 0.01
                 self.nationOutlet.text = "Nation Growth: \(Int(self.nationHealth*100))%"
@@ -388,21 +354,8 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
             }
             }
         
-//        let no = UIAlertAction(title: "No", style: .cancel, handler: nil)
-//        alert.addAction(yes)
-//        alert.addAction(no)
-        //self.present(alert, animated: true, completion: nil)
+
         }
-    
-    
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(true)
-//        print("view disappearing")
-//
-//        print("vc1 \(originalView.money)")
-//        print("storevc \(cash)")
-//
-//    }
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         if let vc = viewController as? ViewController{
