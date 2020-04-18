@@ -445,9 +445,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
             }
             }
             else{
-                explanationAlert = UIAlertController(title: "It's all good!", message: "\(scenario.yes)" , preferredStyle: .actionSheet)
+                explanationAlert = UIAlertController(title: "You Got Lucky!", message: "\(scenario.yes)" , preferredStyle: .actionSheet)
                 if let popoverController = explanationAlert.popoverPresentationController {
-                    explanationAlert = UIAlertController(title: "It's all good!", message: "\(scenario.yes)" , preferredStyle: .alert)
+                    explanationAlert = UIAlertController(title: "You Got Lucky!", message: "\(scenario.yes)" , preferredStyle: .alert)
                 }
                 explanationAlert.addAction(UIAlertAction(title: "ok", style: .default, handler: nil))
                 
