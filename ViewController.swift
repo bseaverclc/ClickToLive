@@ -244,9 +244,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     
     func randomStart(){
         
-        let alert = UIAlertController(title: "Level \(level)", message: "", preferredStyle: .actionSheet)
-         alert.addAction(UIAlertAction(title: "ok", style: .cancel, handler: nil))
-      
+        var alert = UIAlertController(title: "Level \(level)", message: "", preferredStyle: .actionSheet)
+        
+         if let popoverController = alert.popoverPresentationController {
+            alert = UIAlertController(title: "Level \(level)", message: "", preferredStyle: .alert)
+        }
+         alert.addAction(UIAlertAction(title: "ok", style: .default, handler: nil))
        present(alert, animated: true, completion: nil)
     
         
@@ -320,10 +323,17 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         if foodProgressOutlet.progress == 0 ||  healthProgressOutlet.progress == 0 || happinessProgressOutlet.progress == 0 || tpProgressOutlet.progress == 0{
             timer?.invalidate()
             sound?.stop()
-            let loseAlert = UIAlertController(title: "You Lose!", message: loserMessage, preferredStyle: .actionSheet)
+            var loseAlert = UIAlertController(title: "You Lose!", message: loserMessage, preferredStyle: .actionSheet)
+            if let popoverController = loseAlert.popoverPresentationController {
+                loseAlert = UIAlertController(title: "You Lose!", message: loserMessage, preferredStyle: .alert)
+            }
+            
             loseAlert.view.backgroundColor = UIColor.red
             loseAlert.addAction(UIAlertAction(title: "play again", style: .default, handler: { (action) in
                 self.randomStart()}))
+            
+          
+            
             present(loseAlert, animated: true){
                 self.timer?.invalidate()
                 self.playSound(file: "bomb.wav")
@@ -332,10 +342,22 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     else if path.cgPath.currentPoint.y <= hospitalCapacityOutlet.frame.origin.y{
             timer?.invalidate()
             sound?.stop()
-            let loseAlert = UIAlertController(title: "You Lose", message: "Nation Health has overwhelemed the hospitals!", preferredStyle: .actionSheet)
+            var loseAlert = UIAlertController(title: "You Lose", message: "Nation Health has overwhelemed the hospitals!", preferredStyle: .actionSheet)
+            if let popoverController = loseAlert.popoverPresentationController {
+                loseAlert = UIAlertController(title: "You Lose", message: "Nation Health has overwhelemed the hospitals!", preferredStyle: .alert)
+            }
             loseAlert.view.backgroundColor = UIColor.red
             loseAlert.addAction(UIAlertAction(title: "play again", style: .default, handler: { (action) in
                 self.randomStart()}))
+            
+            print("before popover")
+            if let popoverController = loseAlert.popoverPresentationController {
+                print("popover")
+                popoverController.sourceView = nextDayOutlet.imageView
+                popoverController.sourceRect = nextDayOutlet.bounds
+                
+            }
+            
             present(loseAlert, animated: true){
                 self.timer?.invalidate()
                 self.playSound(file: "bomb.wav")
@@ -348,7 +370,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         var explanationAlert = UIAlertController()
         let choice = Int.random(in: 0 ... scenarios.count - 1)
         let scenario = scenarios[choice]
-        let alert = UIAlertController(title: "\(scenario.goodEffect) Opportunity!" , message: scenario.description, preferredStyle: .actionSheet)
+        var alert = UIAlertController(title: "\(scenario.goodEffect) Opportunity!" , message: scenario.description, preferredStyle: .actionSheet)
+            if let popoverController = alert.popoverPresentationController {
+                alert = UIAlertController(title: "\(scenario.goodEffect) Opportunity!" , message: scenario.description, preferredStyle: .alert)
+            }
       
         alert.addAction(UIAlertAction(title: "yes", style: .default, handler: { (action) in
             switch scenario.goodEffect{
@@ -375,11 +400,22 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
                 
             if Float.random(in: 0...1.0) < scenario.probability{
                 explanationAlert = UIAlertController(title: "UH-OH!", message: "\(scenario.yes)  \(scenario.yesYes)" , preferredStyle: .actionSheet)
-                explanationAlert.addAction(UIAlertAction(title: "ok", style: .cancel, handler: {(alert) in
+                if let popoverController = explanationAlert.popoverPresentationController {
+                    explanationAlert = UIAlertController(title: "UH-OH!", message: "\(scenario.yes)  \(scenario.yesYes)" , preferredStyle: .alert)
+                }
+                explanationAlert.addAction(UIAlertAction(title: "ok", style: .default, handler: {(alert) in
                     self.checkLose()
                     
                 }))
         
+                print("before popover")
+                if let popoverController = explanationAlert.popoverPresentationController {
+                    print("popover")
+                    popoverController.sourceView = self.nextDayOutlet.imageView
+                    popoverController.sourceRect = self.nextDayOutlet.bounds
+                    
+                }
+                
                 self.present(explanationAlert, animated: true){
                     self.updateAll()
                     
@@ -410,7 +446,18 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
             }
             else{
                 explanationAlert = UIAlertController(title: "It's all good!", message: "\(scenario.yes)" , preferredStyle: .actionSheet)
-                explanationAlert.addAction(UIAlertAction(title: "ok", style: .cancel, handler: nil))
+                if let popoverController = explanationAlert.popoverPresentationController {
+                    explanationAlert = UIAlertController(title: "It's all good!", message: "\(scenario.yes)" , preferredStyle: .alert)
+                }
+                explanationAlert.addAction(UIAlertAction(title: "ok", style: .default, handler: nil))
+                
+                print("before popover")
+                if let popoverController = explanationAlert.popoverPresentationController {
+                    print("popover")
+                    popoverController.sourceView = self.nextDayOutlet.imageView
+                    popoverController.sourceRect = self.nextDayOutlet.bounds
+                    
+                }
                 self.present(explanationAlert, animated: true){
                     self.playSound(file: "trumpet.wav")
                 }
@@ -421,7 +468,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
             //self.dismiss(animated: true, completion: nil)
             
             }))
-        alert.addAction(UIAlertAction(title: "no", style: .cancel, handler: { (aleret) in
+        alert.addAction(UIAlertAction(title: "no", style: .default, handler: { (aleret) in
             switch scenario.goodEffect{
             case "Family Health":
                 self.healthProgressOutlet.progress -= scenario.goodAmount
@@ -467,15 +514,34 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
                             print("No good effect?")
                         }
             explanationAlert = UIAlertController(title: "Good and Bad", message: "\(scenario.no)" , preferredStyle: .actionSheet)
-            explanationAlert.addAction(UIAlertAction(title: "ok", style: .cancel, handler: { (alert) in
+            if let popoverController = explanationAlert.popoverPresentationController {
+                explanationAlert = UIAlertController(title: "Good and Bad", message: "\(scenario.no)" , preferredStyle: .alert)
+            }
+            
+            explanationAlert.addAction(UIAlertAction(title: "ok", style: .default, handler: { (alert) in
                 self.checkLose()
             }))
+            
+            print("before popover")
+            if let popoverController = explanationAlert.popoverPresentationController {
+                print("popover")
+                popoverController.sourceView = self.nextDayOutlet.imageView
+                popoverController.sourceRect = self.nextDayOutlet.bounds
+                
+            }
             self.present(explanationAlert, animated: true){
                 self.playSound(file: "trumpet.wav")
             }
             self.updateAll()
         }))
            
+            print("before popover")
+            if let popoverController = alert.popoverPresentationController {
+                print("popover")
+                popoverController.sourceView = nextDayOutlet.imageView
+                popoverController.sourceRect = nextDayOutlet.bounds
+                
+            }
        
             present(alert, animated: true) {
                 self.playSound(file: "doorbell.wav")
@@ -518,7 +584,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     func createFoodGroupAlert(message m: String)->UIAlertController{
-        let foodAlert = UIAlertController(title: "You ran out of \(m)", message: "Family Health will suffer 3%", preferredStyle: .actionSheet)
+        var foodAlert = UIAlertController(title: "You ran out of \(m)", message: "Family Health will suffer 3%", preferredStyle: .actionSheet)
+        if let popoverController = foodAlert.popoverPresentationController {
+          foodAlert = UIAlertController(title: "You ran out of \(m)", message: "Family Health will suffer 3%", preferredStyle: .alert)
+        }
+        
        
         
         return foodAlert
@@ -526,7 +596,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     
     func showErrors(){
         if let error = foodAlerts.first{
-            error.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { (action) in
+            error.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                        self.healthProgressOutlet.progress -= 0.03
                        self.updateAll()
                 self.foodAlerts.remove(at: 0)
@@ -534,6 +604,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
                 
                         
                    }))
+            print("before popover")
+            if let popoverController = error.popoverPresentationController {
+                print("popover")
+                popoverController.sourceView = nextDayOutlet.imageView
+                popoverController.sourceRect = nextDayOutlet.bounds
+                
+            }
+            
             present(error, animated: true, completion: nil)
         }
         else{
@@ -605,12 +683,24 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         if hoursPassed == 23{
             if nationHealthRate <= 0.0 {
                 sound?.stop()
-                let winAlert = UIAlertController(title: "You Win Level \(level)", message: "You helped flatten the curve!", preferredStyle: .actionSheet)
+                var winAlert = UIAlertController(title: "You Win Level \(level)", message: "You helped flatten the curve!", preferredStyle: .actionSheet)
+                if let temp = winAlert.popoverPresentationController{
+                    winAlert = UIAlertController(title: "You Win Level \(level)", message: "You helped flatten the curve!", preferredStyle: .alert)
+                }
                 winAlert.view.backgroundColor = UIColor.yellow
                 winAlert.addAction(UIAlertAction(title: "Next Level", style: .default, handler: {(alert) in
                     
                     self.randomStart()
                 }))
+                
+                print("before popover")
+                if let popoverController = winAlert.popoverPresentationController {
+                    print("popover")
+                    popoverController.sourceView = nextDayOutlet.imageView
+                    popoverController.sourceRect = nextDayOutlet.bounds
+                    
+                }
+                
                 present(winAlert, animated: true){
                     self.timer?.invalidate()
                     self.playSound(file: "applause.wav")

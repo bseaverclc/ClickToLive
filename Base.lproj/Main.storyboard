@@ -93,7 +93,6 @@
                                     <constraint firstAttribute="trailing" secondItem="i9Y-M7-eQf" secondAttribute="trailing" id="m75-VT-5eC"/>
                                     <constraint firstItem="ZyY-rJ-10u" firstAttribute="centerX" secondItem="0mE-fX-w7o" secondAttribute="centerX" id="qZc-nP-dNp"/>
                                     <constraint firstAttribute="bottom" secondItem="ZyY-rJ-10u" secondAttribute="bottom" constant="20" id="uUP-N3-W28"/>
-                                    <constraint firstAttribute="height" constant="162" id="xBq-yI-TdR"/>
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Vq2-pf-jRc">
@@ -298,6 +297,17 @@
                                     <constraint firstItem="1JD-hW-HRK" firstAttribute="leading" secondItem="Vq2-pf-jRc" secondAttribute="leading" id="rTK-ww-Wd0"/>
                                 </constraints>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CKe-o9-9AU">
+                                <rect key="frame" x="72.5" y="363" width="230" height="226"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="CKe-o9-9AU" secondAttribute="height" multiplier="115:113" id="Kjd-Ou-fwv"/>
+                                </constraints>
+                                <state key="normal" image="covid19"/>
+                                <connections>
+                                    <action selector="clickAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="u9O-ho-VRH"/>
+                                </connections>
+                            </button>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="qlG-oq-wje">
                                 <rect key="frame" x="10" y="623" width="355" height="39"/>
                                 <subviews>
@@ -325,17 +335,6 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CKe-o9-9AU">
-                                <rect key="frame" x="72.5" y="363" width="230" height="226"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="CKe-o9-9AU" secondAttribute="height" multiplier="115:113" id="Kjd-Ou-fwv"/>
-                                </constraints>
-                                <state key="normal" image="covid19"/>
-                                <connections>
-                                    <action selector="clickAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="u9O-ho-VRH"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
