@@ -11,7 +11,7 @@
         <!--Play Screen-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="ViewController" title="Play Screen" id="BYZ-38-t0r" customClass="ViewController" customModule="Corona_Clicker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ViewController" title="Play Screen" id="BYZ-38-t0r" customClass="ViewController" customModule="Flattenator" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -404,7 +404,7 @@
         <!--Store-->
         <scene sceneID="sS9-gQ-TmD">
             <objects>
-                <viewController title="Store" id="e8x-38-6mE" customClass="StoreViewController" customModule="Corona_Clicker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Store" id="e8x-38-6mE" customClass="StoreViewController" customModule="Flattenator" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="F95-9i-Jf0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -586,7 +586,7 @@
         <!--Home-->
         <scene sceneID="9dH-BX-vTE">
             <objects>
-                <viewController storyboardIdentifier="Home" title="Home" id="oHA-5f-Uzj" customClass="HomeViewController" customModule="Corona_Clicker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Home" title="Home" id="oHA-5f-Uzj" customClass="HomeViewController" customModule="Flattenator" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Yac-oL-9hy">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
