@@ -96,13 +96,10 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
         // couldn't load file :(
     }
     }
-    
-
-    
+        
     func randAvail()-> Double{
         return Double.random(in: 0...1.0)
     }
-    
     
     func addItems(){
        items =  [               // Upgrades
@@ -270,8 +267,7 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
         return cell
         
     }
-    
-    
+        
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print("selected")
         let selected = items[indexPath.row]
@@ -293,7 +289,7 @@ class StoreViewController: UIViewController, UITableViewDataSource, UITableViewD
                 todaysFoodItems.updateValue(1, forKey: selected.title)
             }
             
-            if todaysFoodItems[selected.title]! >= 5 && selected.category != "Upgrades" && selected.category != "Nation Rate"{
+            if todaysFoodItems[selected.title]! >= 3 && selected.category != "Upgrades" && selected.category != "Nation Rate"{
             let alert = UIAlertController(title: "Hoarding Alert!", message: "You are hoarding \(selected.title) and have hurt the Nation's Health! Nation growth rate will increase.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "ok", style: .cancel, handler: { (alert) in
                 self.nationHealth += 0.01
