@@ -6,6 +6,8 @@
 //  Copyright © 2020 clc.seaver. All rights reserved.
 //
 
+// This is going to be great!
+
 import UIKit
 import AVFoundation
 
@@ -132,6 +134,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     
     func buildScenarios()
     {
+        
         scenarios = [
             Scenario(description: "One of your kids is sick.  Go to the Doctor?", goodEffect: "Family Health", badEffect: "Nation Health", goodAmount: 0.1, badAmount: 0.1, probability: 0.99, yes: "Your family health has improved!", yesYes: "However, you got others sick when you went to the doctor. Nation Growth Rate will increase...", no: "Your family health will suffer...  However, you didn't spread your virus so you decreased the nation growth rate and helped flatten the curve!"),
             Scenario(description: "Grandma and Grandpa invite you over to play cards. Should you go?", goodEffect: "Happiness", badEffect: "Nation Health", goodAmount: 0.1, badAmount: 0.10, probability: 0.80, yes: "You increased your happiness by playing cards!", yesYes: "However, you were carrying the virus and got Grandma and Grandpa sick. They are now going to use hospital beds and the Nation Growth Rate will increase...", no:  "Not playing cards has hurt your happiness...  However, you didn't get your Grandma and Grandpa sick so the nation growth rate has decreased!"),
